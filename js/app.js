@@ -3,7 +3,6 @@
 let animalArray = [];
 let keywWords = [];
 
-let hornsArray = [];
 function Animal(image_url, title, description, keyword, horns) {
   this.image_url = image_url;
   this.title = title;
@@ -11,43 +10,10 @@ function Animal(image_url, title, description, keyword, horns) {
   this.keyword = keyword;
   this.horns = horns;
   keywWords.push(this.keyword);
-  hornsArray.push(this.horns);
 }
 
-console.log(keywWords.length);
+// console.log(animalArray)
 
-Animal.prototype.render = function () {
-  $("#template").hide();
-  let imageAlbum = $("#template").clone();
-
-  $("main").append(imageAlbum);
-  imageAlbum.find("h2").text(this.title);
-  imageAlbum.find("img").attr("src", this.image_url);
-  imageAlbum.show();
-
-  imageAlbum.removeAttr("id");
-};
-//make an array for keyword
-let unique = [];
-function array() {
-  for (let index = 0; index < keywWords.length; index++) {
-    let x = keywWords[index];
-    if (!unique.includes(x)) {
-      unique.push(x);
-    }
-  }
-}
-
-//only push the unique ones
-
-function select() {
-  let select = $("select");
-
-  unique.forEach((element) => {
-    let option = `<option>${element}`;
-    select.append(option);
-  });
-}
 
 $("document").ready(getDogsData);
 
@@ -67,53 +33,167 @@ function getDogsData() {
         element.keyword
       );
       animalArray.push(animalObj);
-      animalObj.render();
+      
+      $('#animals').append(animalObj.render());
+
+      // animalObj.render();
     });
 
-    array();
-    select();
+    // array();
+    // select();
   });
 }
 
-// Filtering Feature
 
-$("select").on("change", function (event) {
-  let option = $("select").find(":selected").text();
 
-  if (event.target.value !== "default") {
-    $("main").empty();
+// //make an array for keyword
+let unique = [];
 
-    addimageAlbum();
 
-    for (let index = 0; index < animalArray.length; index++) {
-      if (animalArray[index].keyword === option) {
-        $("#template").hide();
-
-        let imageAlbum = $("#template").clone();
-
-        $("main").append(imageAlbum);
-        imageAlbum.find("h2").text(animalArray[index].keyword);
-
-        imageAlbum.find("img").attr("src", animalArray[index].image_url);
-
-        imageAlbum.show();
-      }
+array();
+// select()
+function array() {
+  console.log(animalArray.length)
+  for (let index = 0; index < animalArray.length; index++) {
+    console.log(animalArray[index].keyword);
+    let x = keywWords[index];
+    if (!unique.includes(x)) {
+      unique.push(x);
+      console.log(unique);
     }
   }
-});
-
-function addimageAlbum() {
-  console.log("this is rendering image album");
-  $("main").append(`
-    <div id="template">
-        <h2></h2>
-        <img src="" alt="" />
-    </div>`);
 }
 
-function check() {
-  $("img").description;
-}
+
+
+// //only push the unique ones
+
+// function select() {
+//   let select = $("select");
+  
+  
+//   unique.forEach((element) => {
+//     let option = `<option>${element}`;
+//     select.append(option);
+//   });
+// }
+
+
+// Identify the mustache template.
+// Why? The actual JS shouldn't have any 'knowledge' or 'insight' into the page structure at all.
+// We call this "separation of concerns"
+let templateId = '#template';
+
+// let neighborhoods = [];
+
+// Demo Mustache
+Animal.prototype.render = function () {
+  // console.log(this);
+  // 1. Get the template from the HTML document
+  let template = $(templateId).html();
+  // console.log(template);
+  // 2. Use Mustache to "render" new html by merging the template with the data
+  let html = Mustache.render(template, this);
+  // 3. Do not forget to return the HTML from this method
+  return html
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Animal.prototype.render = function () {
+//   $("#template").hide();
+//   let imageAlbum = $("#template").clone();
+
+//   $("main").append(imageAlbum);
+//   imageAlbum.find("h2").text(this.title);
+//   imageAlbum.find("img").attr("src", this.image_url);
+//   imageAlbum.show();
+
+//   imageAlbum.removeAttr("id");
+// };
+
+
+
+// // Filtering Feature
+
+// $("select").on("change", function (event) {
+//   let option = $("select").find(":selected").text();
+
+//   if (event.target.value !== "default") {
+//     $("main").empty();
+
+//     addimageAlbum();
+
+//     for (let index = 0; index < animalArray.length; index++) {
+//       if (animalArray[index].keyword === option) {
+//         $("#template").hide();
+
+//         let imageAlbum = $("#template").clone();
+
+//         $("main").append(imageAlbum);
+//         imageAlbum.find("h2").text(animalArray[index].keyword);
+
+//         imageAlbum.find("img").attr("src", animalArray[index].image_url);
+
+//         imageAlbum.show();
+//       }
+//     }
+//   }
+// });
+
+// function addimageAlbum() {
+//   console.log("this is rendering image album");
+//   $("main").append(`
+//     <div id="template">
+//         <h2></h2>
+//         <img src="" alt="" />
+//     </div>`);
+// }
+
+// function check() {
+//   $("img").description;
+// }
 
 
 
@@ -138,15 +218,6 @@ Reset the filters, then repopulate them using only keywords from the images curr
 
 
 */
-
-
-
-
-
-
-
-
-
 
 
 
