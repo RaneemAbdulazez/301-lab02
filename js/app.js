@@ -2,6 +2,7 @@
 
 let animalArray = [];
 let keywWords = [];
+let unique = [];
 
 function Animal(image_url, title, description, keyword, horns) {
   this.image_url = image_url;
@@ -15,18 +16,17 @@ function Animal(image_url, title, description, keyword, horns) {
 
 
 // $("document").ready(getDogsData);
-getDogsData();
 
 
 
 
-function getDogsData() {
+function getDogsData(num) {
   const ajaxSettings = {
     method: "get",
     dataType: "json",
   };
   
-  $.ajax("data/page-1.json", ajaxSettings).then((data) => {
+  $.ajax(`data/page-${num}.json`, ajaxSettings).then((data) => {
     data.forEach((element) => {
       let animalObj = new Animal(
         element.image_url,
@@ -38,10 +38,7 @@ function getDogsData() {
         animalArray.push(animalObj);
         
         $('#animals').append(animalObj.render());
-        
-        // animalObj.render();
       });
-      
       array();
     });
   }
@@ -52,11 +49,9 @@ function getDogsData() {
   
   
   // //make an array for keyword
-  let unique = [];
-  
+ 
   
   function array() {
-  console.log(animalArray.length);
  
   for (let index = 0; index < keywWords.length; index++) {
     let x = keywWords[index];
@@ -74,7 +69,7 @@ function getDogsData() {
 
 function select() {
   let select = $("select");
-  
+  console.log(unique,'-----------hoooooooooooooooooopa------------------------');
   
   unique.forEach((element) => {
     let option = `<option>${element}`;
@@ -88,6 +83,9 @@ function select() {
 // Identify the mustache template.
 // Why? The actual JS shouldn't have any 'knowledge' or 'insight' into the page structure at all.
 // We call this "separation of concerns"
+
+
+
 let templateId = '#template';
 
 // let neighborhoods = [];
@@ -111,23 +109,27 @@ Animal.prototype.render = function () {
 // Filtering Feature
 
 $("select").on("change", function (event) {
+
+
+
   let option = $("select").find(":selected").text();
+
+
 
   if (event.target.value !== "default") {
     $("main").empty();
 
     addimageAlbum();
 
+     console.log(animalArray,'this is animal array')
+
     for (let index = 0; index < animalArray.length; index++) {
       if (animalArray[index].keyword === option) {
-        $("#template").hide();
 
-        let imageAlbum = $("#template").clone();
 
-        $("main").append(imageAlbum);
-        imageAlbum.find("h2").text(animalArray[index].keyword);
 
-        imageAlbum.find("img").attr("src", animalArray[index].image_url);
+          $('#animals').append(animalArray[index].render());
+          
 
         imageAlbum.show();
       }
@@ -136,37 +138,96 @@ $("select").on("change", function (event) {
 });
 
 function addimageAlbum() {
-  console.log("this is rendering image album");
+  // console.log("this is rendering image album");
   $("main").append(`
-    <div id="template">
-        <h2></h2>
-        <img src="" alt="" />
-    </div>`);
+  <section id="animals">
+  <template id="template" type="text/x-tmpl-mustache">
+      <div id="{{title}}" class="{{title}}">
+        <h2>{{title}}</h2>
+        <img src="{{image_url}}" >
+      </img>
+    
+      </div>
+    </template>`);
 }
 
 
 
 
-/*
 
 
-Feature 1: Pagination
-Why are we implementing this feature?
+$('#1').click(function(event){
+ animalArray=[];
+ unique=[];
+ keywWords=[];
+
+  $("main").empty();
+$('select').empty();
+  addimageAlbum();
+getDogsData(1);
+
+  
+  animalArray.forEach(element =>{
+
+$('#animals').append(element.render());
+
+  })
 
 
-As a user, I want to have the ability to view additional images so that my view does not become cluttered.
-What are we going to implement?
-Given that a user opens the application in the browser When the user clicks on a button or link to another page Then the other set of images should be dynamically displayed
-
-How are we implementing it?
-Add navigation for the user to switch between two pages. Each page should render a unique set of images from one of the two provided JSON files.
-Reset the filters, then repopulate them using only keywords from the images currently being displayed.
 
 
-*/
+}
 
 
-// Feature 1: Pagination
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#2').click(function(event){
+  animalArray=[];
+  unique=[];
+  keywWords=[];
+
+  $("main").empty();
+  $('select').empty();
+
+  addimageAlbum();
+getDogsData(2);
+
+  
+  animalArray.forEach(element =>{
+// console.log('--------------------------------------------------')
+
+$('#animals').append(element.render());
+
+  })
+
+
+
+}
+)
+
+
+
 
 
 
