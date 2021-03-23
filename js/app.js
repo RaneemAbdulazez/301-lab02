@@ -12,17 +12,20 @@ function Animal(image_url, title, description, keyword, horns) {
   keywWords.push(this.keyword);
 }
 
-// console.log(animalArray)
 
 
-$("document").ready(getDogsData);
+// $("document").ready(getDogsData);
+getDogsData();
+
+
+
 
 function getDogsData() {
   const ajaxSettings = {
     method: "get",
     dataType: "json",
   };
-
+  
   $.ajax("data/page-1.json", ajaxSettings).then((data) => {
     data.forEach((element) => {
       let animalObj = new Animal(
@@ -31,52 +34,55 @@ function getDogsData() {
         element.description,
         element.keyword,
         element.keyword
-      );
-      animalArray.push(animalObj);
+        );
+        animalArray.push(animalObj);
+        
+        $('#animals').append(animalObj.render());
+        
+        // animalObj.render();
+      });
       
-      $('#animals').append(animalObj.render());
-
-      // animalObj.render();
+      array();
     });
-
-    // array();
-    // select();
-  });
-}
+  }
 
 
 
-// //make an array for keyword
-let unique = [];
-
-
-array();
-// select()
-function array() {
-  console.log(animalArray.length)
-  for (let index = 0; index < animalArray.length; index++) {
-    console.log(animalArray[index].keyword);
+  
+  
+  
+  // //make an array for keyword
+  let unique = [];
+  
+  
+  function array() {
+  console.log(animalArray.length);
+ 
+  for (let index = 0; index < keywWords.length; index++) {
     let x = keywWords[index];
     if (!unique.includes(x)) {
       unique.push(x);
-      console.log(unique);
     }
   }
+        select();
+
 }
 
 
 
 // //only push the unique ones
 
-// function select() {
-//   let select = $("select");
+function select() {
+  let select = $("select");
   
   
-//   unique.forEach((element) => {
-//     let option = `<option>${element}`;
-//     select.append(option);
-//   });
-// }
+  unique.forEach((element) => {
+    let option = `<option>${element}`;
+    select.append(option);
+  });
+
+
+}
 
 
 // Identify the mustache template.
@@ -102,101 +108,41 @@ Animal.prototype.render = function () {
 
 
 
+// Filtering Feature
 
+$("select").on("change", function (event) {
+  let option = $("select").find(":selected").text();
 
+  if (event.target.value !== "default") {
+    $("main").empty();
 
+    addimageAlbum();
 
+    for (let index = 0; index < animalArray.length; index++) {
+      if (animalArray[index].keyword === option) {
+        $("#template").hide();
 
+        let imageAlbum = $("#template").clone();
 
+        $("main").append(imageAlbum);
+        imageAlbum.find("h2").text(animalArray[index].keyword);
 
+        imageAlbum.find("img").attr("src", animalArray[index].image_url);
 
+        imageAlbum.show();
+      }
+    }
+  }
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Animal.prototype.render = function () {
-//   $("#template").hide();
-//   let imageAlbum = $("#template").clone();
-
-//   $("main").append(imageAlbum);
-//   imageAlbum.find("h2").text(this.title);
-//   imageAlbum.find("img").attr("src", this.image_url);
-//   imageAlbum.show();
-
-//   imageAlbum.removeAttr("id");
-// };
-
-
-
-// // Filtering Feature
-
-// $("select").on("change", function (event) {
-//   let option = $("select").find(":selected").text();
-
-//   if (event.target.value !== "default") {
-//     $("main").empty();
-
-//     addimageAlbum();
-
-//     for (let index = 0; index < animalArray.length; index++) {
-//       if (animalArray[index].keyword === option) {
-//         $("#template").hide();
-
-//         let imageAlbum = $("#template").clone();
-
-//         $("main").append(imageAlbum);
-//         imageAlbum.find("h2").text(animalArray[index].keyword);
-
-//         imageAlbum.find("img").attr("src", animalArray[index].image_url);
-
-//         imageAlbum.show();
-//       }
-//     }
-//   }
-// });
-
-// function addimageAlbum() {
-//   console.log("this is rendering image album");
-//   $("main").append(`
-//     <div id="template">
-//         <h2></h2>
-//         <img src="" alt="" />
-//     </div>`);
-// }
-
-// function check() {
-//   $("img").description;
-// }
-
-
-
+function addimageAlbum() {
+  console.log("this is rendering image album");
+  $("main").append(`
+    <div id="template">
+        <h2></h2>
+        <img src="" alt="" />
+    </div>`);
+}
 
 
 
@@ -218,6 +164,14 @@ Reset the filters, then repopulate them using only keywords from the images curr
 
 
 */
+
+
+// Feature 1: Pagination
+
+
+
+
+
 
 
 
