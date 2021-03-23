@@ -1,0 +1,13 @@
+button{
+    width: 50px;
+    border: navy solid;
+}
+/* #buttons{
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+footer{
+    /* border: solid navy; */
+    bottom: 0;
+}
