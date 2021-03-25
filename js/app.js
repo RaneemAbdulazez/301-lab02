@@ -194,7 +194,8 @@ function addimageAlbum() {
         <h2>{{title}}</h2>
         <img src="{{image_url}}" >
       </img>
-    
+      <p>{{description}}</p>
+
       </div>
     </template>`);
 }
